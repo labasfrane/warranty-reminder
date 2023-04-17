@@ -1,7 +1,8 @@
 import { GetStaticProps } from "next";
 import { User } from "@prisma/client";
 import prisma from "../lib/prisma";
-import Header from "../components/Header";
+
+import Layout from "../components/Layout";
 
 type Props = {
   users: User[];
@@ -21,8 +22,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Home = ({ users }: Props) => {
   return (
-    <main className="">
-      <Header />
+    <Layout>
       <h1 className="text-red-500"> Users</h1>
       {users.map(({ id, name, email }: User) => (
         <section key={id}>
@@ -30,7 +30,7 @@ const Home = ({ users }: Props) => {
           <p>{email}</p>
         </section>
       ))}
-    </main>
+    </Layout>
   );
 };
 

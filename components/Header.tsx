@@ -35,7 +35,7 @@ const Header: React.FC = () => {
       <div className="flex space-x-5">
         <Link href="/">Warranty Reminder</Link>
         <Link href="/create">
-          <button>Create New</button>
+          <button>Add new item</button>
         </Link>
       </div>
     );
