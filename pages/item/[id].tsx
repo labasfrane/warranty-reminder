@@ -4,6 +4,7 @@ import { Product } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import HttpRequest from "../../http/requests.http";
 
 export const getServerSideProps: any = async ({ params }: any) => {
   const post = await prisma.product.findUnique({
@@ -21,12 +22,10 @@ const DetailProductView: React.FC<Product> = (props) => {
   let title = props.title;
   const { data: session } = useSession();
   const isUserLogedIn = Boolean(session);
+  const httpRequest = new HttpRequest();
 
-  //Delete function
   async function deleteProduct(id: string): Promise<void> {
-    await fetch(`/api/post/${id}`, {
-      method: "DELETE",
-    });
+    await httpRequest.deleteProduct(+id);
     router.push("/");
   }
 
