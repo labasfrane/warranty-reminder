@@ -19,13 +19,13 @@ export const getServerSideProps: any = async ({ params }: any) => {
 
 const DetailProductView: React.FC<Product> = (props) => {
   const router = useRouter();
-  let title = props.title;
+  let title = props.product;
   const { data: session } = useSession();
   const isUserLogedIn = Boolean(session);
   const httpRequest = new HttpRequest();
 
   async function deleteProduct(id: string): Promise<void> {
-    await httpRequest.deleteProduct(+id);
+    await httpRequest.deleteProduct(id);
     router.push("/");
   }
 
@@ -34,7 +34,9 @@ const DetailProductView: React.FC<Product> = (props) => {
       <div>
         <h2>{title}</h2>
         {isUserLogedIn && (
-          <button onClick={() => deleteProduct(props.id)}>Delete</button>
+          <button onClick={() => deleteProduct(String(props.id))}>
+            Delete
+          </button>
         )}
       </div>
     </Layout>

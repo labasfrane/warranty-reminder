@@ -1,10 +1,13 @@
-// Header.tsx
 import React from "react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const Header: React.FC = () => {
   const { data: session, status } = useSession();
+  const { pathname } = useRouter();
+
+  const hideOnView = pathname !== "/item/[id]";
 
   let left = <Link href="/">Warranty Reminder</Link>;
   let right = null;
@@ -12,7 +15,7 @@ const Header: React.FC = () => {
   if (status === "loading") {
     left = (
       <div className="left">
-        <Link href="/">Feed</Link>
+        <Link href="/">Warranty Reminder</Link>
       </div>
     );
     right = (
@@ -35,7 +38,7 @@ const Header: React.FC = () => {
       <div className="flex space-x-5">
         <Link href="/">Warranty Reminder</Link>
         <Link href="/create">
-          <button>Add new item</button>
+          {hideOnView && <button>Add new item</button>}
         </Link>
       </div>
     );
@@ -52,7 +55,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <nav className="flex justify-between items-center p-5">
+    <nav className="flex justify-between items-center px-10 py-7 bg-slate-400 shadow">
       {left}
       {right}
     </nav>

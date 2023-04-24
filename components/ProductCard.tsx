@@ -8,22 +8,41 @@ type Props = {
 
 function ProductCard({ product }: Props) {
   const date = new Date();
-
   const router = useRouter();
   const handleNavigate = () => {
-    router.push("/item/[id]", `/item/${product.id}`);
+    router.push("/product/[id]", `/product/${product.id}`);
   };
 
   return (
     <article
       onClick={handleNavigate}
-      className="space-y-2 flex flex-col items-center w-52 border border-blue-400 rounded-md m-5 cursor-pointer"
+      className="flex flex-col bg-slate-50 rounded shadow items-center p-3 space-y-3 w-72 border cursor-pointer hover:scale-105 hover:bg-white hover:drop-shadow tranistion ease-in duration-200 text-center"
     >
-      <h3>{product.title}</h3>
-      <p>Store name</p>
-      <span>Price: 250$</span>
-      <span>Date of purchase: {date.getFullYear()}</span>
-      <span>Warranty duration:2 years</span>
+      <section>
+        <h3 className="text-lg font-semibold">{product.product}</h3>
+        <p className="text-xs text-gray-500 uppercase">Product</p>
+      </section>
+      <section className="flex flex-row justify-around gap-x-12">
+        <div>
+          <h3 className="text-lg font-semibold">2 Years</h3>
+          <p className="text-xs text-gray-500 uppercase">duration</p>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">{product.value || "N/A"}</h3>
+          <p className="text-xs text-gray-500 uppercase">Price</p>
+        </div>
+      </section>
+      <section className="grid grid-cols-2 gap-x-5">
+        <div>
+          <h3 className="text-lg font-semibold">{product.date}</h3>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">{date.toLocaleDateString()}</h3>
+        </div>
+        <p className="text-xs text-gray-500 uppercase col-span-2">
+          Start - End
+        </p>
+      </section>
     </article>
   );
 }

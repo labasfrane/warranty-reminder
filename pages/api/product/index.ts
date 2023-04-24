@@ -1,23 +1,21 @@
-// pages/api/post/index.ts
-
-import { getSession } from "next-auth/react";
-import prisma from "../../../lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
 import { Product } from "@prisma/client";
+import prisma from "../../../lib/prisma";
 
-// POST /api/post
-// Required fields in body: title
-// Optional fields in body: content
-export default async function handler(
+export default async function createHandler(
   req: NextApiRequest,
   res: NextApiResponse<Product>
 ) {
-  const { title } = req.body;
-
+  const { product, value, store, date } = req.body;
+  //Check session!!!
   const session = await getSession({ req });
   const result = await prisma.product.create({
     data: {
-      title: title,
+      product: product,
+      value: value,
+      store: store,
+      date: date,
     },
   });
   res.json(result);

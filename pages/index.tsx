@@ -1,8 +1,9 @@
 import { GetStaticProps } from "next";
 import { User, Product } from "@prisma/client";
 import prisma from "../lib/prisma";
-
+import { useSession } from "next-auth/react";
 import Layout from "../components/Layout";
+import ProductCard from "../components/ProductCard";
 
 type Props = {
   users: User[];
@@ -21,18 +22,33 @@ export const getStaticProps: GetStaticProps = async () => {
   const products = await prisma.product.findMany({
     select: {
       id: true,
-      title: true,
+      product: true,
+      value: true,
+      store: true,
+      date: true,
     },
   });
+
+  console.log(products);
 
   return { props: { users, products } };
 };
 
 const Home = ({ users, products }: Props) => {
+  const { data: session } = useSession();
+  const isUserLogedIn = Boolean(session);
+
+  const content = products.map((product: Product) => (
+    <ProductCard key={product.id} product={product} />
+  ));
   return (
     <Layout>
-      <h1 className="text-red-500"> Users</h1>
-      {products.map(({ id, title }) => (
+      <div className="flex gap-5 items-center justify-center p-10">
+        {isUserLogedIn
+          ? content
+          : "Welcome to Warranty Reminder, please Login to continue! "}
+      </div>
+      {/* {products.map(({ id, title }) => (
         <section key={id}>
           <p>{title}</p>
         </section>
@@ -42,7 +58,7 @@ const Home = ({ users, products }: Props) => {
           <p>{name}</p>
           <p>{email}</p>
         </section>
-      ))}
+      ))} */}
     </Layout>
   );
 };

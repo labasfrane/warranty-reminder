@@ -53,7 +53,9 @@ model VerificationToken {
 }
 
 model Product {
-  id          String  @id @default(cuid())
-  title       String
-  description String?
+  id      String  @id @default(cuid())
+  product String
+  value   String?
+  store   String?
+  date    String
 }
