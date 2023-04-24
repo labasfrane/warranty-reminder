@@ -1,26 +1,33 @@
 import { useRouter } from "next/router";
-import React, { useId, useState } from "react";
 import HttpRequest from "../http/requests.http";
+import InputField from "../components/InputField";
+import { SubmitHandler } from "react-hook-form";
+import Form from "../components/Form";
+import Select from "../components/Select";
+
+type FormValues = {
+  product: string;
+  value: string;
+  store: string;
+  date: string;
+  id?: string;
+};
 
 type Props = {};
 
 const Create = ({}: Props) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const id = useId();
-
   const router = useRouter();
-
   const httpRequest = new HttpRequest();
 
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      const body = { title, description, id };
+      console.log(data);
+      const { product, value, store, date } = data;
+      const body = { product, value, store, date };
       await httpRequest.postProduct(body);
       await router.push("/");
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -31,31 +38,45 @@ const Create = ({}: Props) => {
         Please fill out the required(*) fields and click add to create new
       </p>
       <div className="w-full max-w-md">
-        <form
-          onSubmit={submitData}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-        >
-          <div className="mb-5">
-            <label htmlFor="productField" className="block mb-2">
-              Product
-            </label>
-            <input
-              id="productField"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1"
-              autoFocus
-              type="text"
-              placeholder="Product"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <input
-            className="disabled:opacity-30 cursor-pointer"
-            disabled={!title}
-            type="submit"
-            value="Add item"
+        <Form onSubmit={onSubmit}>
+          <InputField
+            title="Product"
+            id="product"
+            inputName="product"
+            type="text"
+            placeholder="ex. Printer"
+            isRequired={true}
           />
-        </form>
+          <InputField
+            title="Value"
+            id="value"
+            inputName="value"
+            type="text"
+            placeholder="ex. 100$"
+          />
+          <InputField
+            title="Store"
+            id="store"
+            inputName="Store"
+            type="text"
+            placeholder="ex. Amazon"
+          />
+          <InputField
+            title="Date of purchase *"
+            id="date"
+            inputName="date"
+            type="date"
+            isRequired={true}
+            errorMsg="Please select a day of purchase"
+          />
+          <Select
+            title="Duration"
+            id="duration"
+            inputName="duration"
+            isRequired={true}
+            errorMsg="Please select duration period of product"
+          />
+        </Form>
       </div>
     </div>
   );
