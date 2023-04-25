@@ -62,7 +62,7 @@ const Create = ({}: Props) => {
             placeholder="ex. Amazon"
           />
           <InputField
-            title="Date of purchase *"
+            title="Date of purchase"
             id="date"
             inputName="date"
             type="date"

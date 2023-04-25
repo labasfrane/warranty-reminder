@@ -27,15 +27,15 @@ const Select = ({
         {isRequired ? `${title} *` : title}
       </label>
       <select
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1"
+        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400"
         autoFocus
         {...register(`${inputName}`, {
           required: { value: isRequired, message: `${errorMsg}` },
         })}
         id={id}
       >
-        <option defaultValue={""} disabled>
-          -
+        <option className="text-red-300" value={""}>
+          Choose one option
         </option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -44,13 +44,15 @@ const Select = ({
         <option value="5">5</option>
       </select>
 
-      <ErrorMessage
-        errors={errors}
-        name={inputName}
-        render={({ message }) => (
-          <p className="text-red-500 text-start p-1">{message}</p>
-        )}
-      />
+      <div className="min-h-7 h-7 flex items-center">
+        <ErrorMessage
+          errors={errors}
+          name={inputName}
+          render={({ message }) => (
+            <p className="text-red-500 text-start p-1">{message}</p>
+          )}
+        />
+      </div>
     </div>
   );
 };

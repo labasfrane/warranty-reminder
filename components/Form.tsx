@@ -8,8 +8,6 @@ type Props = {
 
 const Form = ({ children, onSubmit }: Props) => {
   const methods = useForm();
-  // const watch = methods.watch();
-  // console.log("watch:", watch);
 
   return (
     <FormProvider {...methods}>
@@ -20,9 +18,17 @@ const Form = ({ children, onSubmit }: Props) => {
         {children}
         <input
           className="disabled:opacity-30 cursor-pointer"
-          // disabled={!watch.title}
+          disabled={!methods.formState.isValid}
           type="submit"
         />
+        <button
+          type="button"
+          onClick={() => {
+            methods.reset();
+          }}
+        >
+          Clear
+        </button>
       </form>
     </FormProvider>
   );
