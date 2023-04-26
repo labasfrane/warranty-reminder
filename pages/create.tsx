@@ -45,13 +45,14 @@ const Create = ({}: Props) => {
             inputName="product"
             type="text"
             placeholder="ex. Printer"
-            isRequired={true}
+            isRequired
+            maxLength={15}
           />
           <InputField
             title="Value"
             id="value"
             inputName="value"
-            type="text"
+            type="number"
             placeholder="ex. 100$"
           />
           <InputField
@@ -60,20 +61,21 @@ const Create = ({}: Props) => {
             inputName="Store"
             type="text"
             placeholder="ex. Amazon"
+            maxLength={20}
           />
           <InputField
             title="Date of purchase"
             id="date"
             inputName="date"
             type="date"
-            isRequired={true}
+            isRequired
             errorMsg="Please select a day of purchase"
           />
           <Select
             title="Duration"
             id="duration"
             inputName="duration"
-            isRequired={true}
+            isRequired
             errorMsg="Please select duration period of product"
           />
         </Form>

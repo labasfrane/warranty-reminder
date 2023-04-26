@@ -9,6 +9,9 @@ type Props = {
   placeholder?: string;
   errorMsg?: string;
   isRequired?: boolean;
+  maxLength?: number;
+  maxValue?: number;
+  minValue?: number;
 };
 
 const InputField = ({
@@ -17,8 +20,11 @@ const InputField = ({
   id,
   type,
   placeholder,
-  isRequired = false,
+  isRequired,
   errorMsg = "This field is required",
+  maxLength = 25,
+  maxValue = 100000000,
+  minValue = 0,
 }: Props) => {
   const {
     register,
@@ -31,9 +37,19 @@ const InputField = ({
         {isRequired ? `${title} *` : title}
       </label>
       <input
+        min={0}
         autoFocus
         {...register(`${inputName}`, {
-          required: { value: isRequired, message: `${errorMsg}` },
+          min: { value: minValue, message: "Value must be positive number" },
+          max: {
+            value: maxValue,
+            message: `Maximum value is ${maxValue.toLocaleString("en-US")}$`,
+          },
+          required: { value: !!isRequired, message: `${errorMsg}` },
+          maxLength: {
+            value: maxLength,
+            message: `${title} field maximum length is ${maxLength} characters`,
+          },
         })}
         id={id}
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400"

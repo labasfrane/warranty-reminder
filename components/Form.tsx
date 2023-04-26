@@ -7,7 +7,14 @@ type Props = {
 };
 
 const Form = ({ children, onSubmit }: Props) => {
-  const methods = useForm();
+  const methods = useForm({
+    mode: "onChange",
+  });
+  const watchedFields = methods.watch(["product", "date", "duration"]);
+
+  const hasInputValue = (arr: String[]): Boolean => {
+    return arr.every((value) => value !== "" && value !== undefined);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -17,8 +24,8 @@ const Form = ({ children, onSubmit }: Props) => {
       >
         {children}
         <input
-          className="disabled:opacity-30 cursor-pointer"
-          disabled={!methods.formState.isValid}
+          className="disabled:opacity-30 cursor-pointer mr-2"
+          disabled={!hasInputValue(watchedFields)}
           type="submit"
         />
         <button
