@@ -24,7 +24,7 @@ function ProductCard({ product }: Props) {
       </section>
       <section className="flex flex-row justify-around gap-x-12">
         <div>
-          <h3 className="text-lg font-semibold">2 Years</h3>
+          <h3 className="text-lg font-semibold">{product.period}</h3>
           <p className="text-xs text-gray-500 uppercase">duration</p>
         </div>
         <div>

@@ -9,6 +9,11 @@ type Props = {
   isRequired?: boolean;
 };
 
+type Options = {
+  label: string;
+  value: string | number;
+};
+
 const Select = ({
   title,
   inputName,
@@ -16,6 +21,20 @@ const Select = ({
   isRequired = false,
   errorMsg = "This field is required",
 }: Props) => {
+  const optionsArr = [
+    { label: "Choose one option", value: "" },
+    { label: "One", value: 1 },
+    { label: "Two", value: 2 },
+    { label: "Three", value: 3 },
+    { label: "Four", value: 4 },
+    { label: "Five", value: 5 },
+    { label: "Six", value: 6 },
+    { label: "Seven", value: 7 },
+    { label: "Eight", value: 8 },
+    { label: "Nine", value: 9 },
+    { label: "Ten", value: 10 },
+  ];
+
   const {
     register,
     formState: { errors },
@@ -34,14 +53,15 @@ const Select = ({
         })}
         id={id}
       >
-        <option className="text-red-300" value={""}>
-          Choose one option
-        </option>
+        {optionsArr.map((option) => (
+          <option value={option.value}>{option.value}</option>
+        ))}
+        {/* <option value={""}>Choose one option</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
-        <option value="5">5</option>
+        <option value="5">5</option> */}
       </select>
 
       <div className="min-h-7 h-7 flex items-center">

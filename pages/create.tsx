@@ -4,13 +4,15 @@ import InputField from "../components/InputField";
 import { SubmitHandler } from "react-hook-form";
 import Form from "../components/Form";
 import Select from "../components/Select";
+import { Product } from "@prisma/client";
 
 type FormValues = {
   product: string;
-  value: string;
+  value: number;
   store: string;
   date: string;
   id?: string;
+  period: number;
 };
 
 type Props = {};
@@ -19,11 +21,13 @@ const Create = ({}: Props) => {
   const router = useRouter();
   const httpRequest = new HttpRequest();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data: Product) => {
     try {
       console.log(data);
-      const { product, value, store, date } = data;
-      const body = { product, value, store, date };
+      const { product, store, date } = data;
+      const period = Number(data.period);
+      const value = Number(data.value);
+      const body = { product, value, store, date, period };
       await httpRequest.postProduct(body);
       await router.push("/");
     } catch (e) {
@@ -31,6 +35,7 @@ const Create = ({}: Props) => {
     }
   };
 
+  // have to fix Number() with {valueAsNumber: true} in InputField component
   return (
     <div className="flex flex-col justify-center items-center space-y-10 py-5 ">
       <h1 className="text-xl uppercase">Create</h1>
@@ -58,7 +63,7 @@ const Create = ({}: Props) => {
           <InputField
             title="Store"
             id="store"
-            inputName="Store"
+            inputName="store"
             type="text"
             placeholder="ex. Amazon"
             maxLength={20}
@@ -72,9 +77,9 @@ const Create = ({}: Props) => {
             errorMsg="Please select a day of purchase"
           />
           <Select
-            title="Duration"
-            id="duration"
-            inputName="duration"
+            title="Duration (Period of time)"
+            id="period"
+            inputName="period"
             isRequired
             errorMsg="Please select duration period of product"
           />

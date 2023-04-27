@@ -26,10 +26,9 @@ export const getStaticProps: GetStaticProps = async () => {
       value: true,
       store: true,
       date: true,
+      period: true,
     },
   });
-
-  console.log(products);
 
   return { props: { users, products } };
 };

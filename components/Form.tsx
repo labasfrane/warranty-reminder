@@ -10,7 +10,7 @@ const Form = ({ children, onSubmit }: Props) => {
   const methods = useForm({
     mode: "onChange",
   });
-  const watchedFields = methods.watch(["product", "date", "duration"]);
+  const watchedFields = methods.watch(["product", "date", "period"]);
 
   const hasInputValue = (arr: String[]): Boolean => {
     return arr.every((value) => value !== "" && value !== undefined);

@@ -7,7 +7,7 @@ export default async function createHandler(
   req: NextApiRequest,
   res: NextApiResponse<Product>
 ) {
-  const { product, value, store, date } = req.body;
+  const { product, value, store, date, period }: Product = req.body;
   //Check session!!!
   const session = await getSession({ req });
   const result = await prisma.product.create({
@@ -16,6 +16,7 @@ export default async function createHandler(
       value: value,
       store: store,
       date: date,
+      period: period,
     },
   });
   res.json(result);
