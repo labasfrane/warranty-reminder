@@ -19,7 +19,7 @@ const Select = ({
   inputName,
   id,
   isRequired = false,
-  errorMsg = "This field is required",
+  errorMsg = "Please select one of the options",
 }: Props) => {
   const optionsArr = [
     { label: "Choose one option", value: "" },
@@ -45,6 +45,7 @@ const Select = ({
       <label htmlFor={id} className="block mb-2">
         {isRequired ? `${title} *` : title}
       </label>
+
       <select
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400"
         autoFocus
@@ -54,14 +55,10 @@ const Select = ({
         id={id}
       >
         {optionsArr.map((option) => (
-          <option value={option.value}>{option.value}</option>
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
         ))}
-        {/* <option value={""}>Choose one option</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option> */}
       </select>
 
       <div className="min-h-7 h-7 flex items-center">
