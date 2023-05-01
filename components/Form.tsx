@@ -1,12 +1,15 @@
-import React from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormCtxProvider } from "../context/form.context";
 
 type Props = {
   children: any;
   onSubmit: SubmitHandler<any>;
+  isDisabled?: boolean;
+  preFill?: any;
 };
 
-const Form = ({ children, onSubmit }: Props) => {
+const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
   const methods = useForm({
     mode: "onChange",
   });
@@ -16,28 +19,32 @@ const Form = ({ children, onSubmit }: Props) => {
     return arr.every((value) => value !== "" && value !== undefined);
   };
 
+  useEffect(() => methods.reset(preFill), [preFill, methods]);
+
   return (
-    <FormProvider {...methods}>
+    <FormCtxProvider methods={methods} isDisabled={isDisabled}>
       <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        onSubmit={methods?.handleSubmit(onSubmit)}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 "
       >
         {children}
-        <input
-          className="disabled:opacity-30 cursor-pointer mr-2"
-          disabled={!hasInputValue(watchedFields)}
-          type="submit"
-        />
-        <button
-          type="button"
-          onClick={() => {
-            methods.reset();
-          }}
-        >
-          Clear
-        </button>
+        <div>
+          <input
+            className="disabled:opacity-30 cursor-pointer mr-2"
+            disabled={!hasInputValue(watchedFields)}
+            type="submit"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              methods?.reset();
+            }}
+          >
+            Clear
+          </button>
+        </div>
       </form>
-    </FormProvider>
+    </FormCtxProvider>
   );
 };
 

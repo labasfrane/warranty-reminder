@@ -44,7 +44,7 @@ const Create = ({}: Props) => {
         <p className="">
           Please fill out the required(*) fields and click add to create new
         </p>
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg">
           <Form onSubmit={onSubmit}>
             <InputField
               title="Product name"
