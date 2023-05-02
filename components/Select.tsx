@@ -51,6 +51,7 @@ const Select = ({
         autoFocus
         {...register(`${inputName}`, {
           required: { value: isRequired, message: `${errorMsg}` },
+          valueAsNumber: true,
         })}
         id={id}
       >

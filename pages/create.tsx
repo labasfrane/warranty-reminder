@@ -25,18 +25,15 @@ const Create = ({}: Props) => {
   const onSubmit: SubmitHandler<FormValues> = async (data: Product) => {
     try {
       console.log(data);
-      const { product, store, date } = data;
-      const period = Number(data.period);
-      const value = Number(data.value);
+      const { product, value, store, date, period } = data;
       const body = { product, value, store, date, period };
       await httpRequest.postProduct(body);
       await router.push("/");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
   };
 
-  // have to fix Number() with {valueAsNumber: true} in InputField component
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center space-y-10 py-5 ">
@@ -47,33 +44,30 @@ const Create = ({}: Props) => {
         <div className="w-full max-w-lg">
           <Form onSubmit={onSubmit}>
             <InputField
-              title="Product name"
+              label="Product name"
               id="product"
-              inputName="product"
               type="text"
               placeholder="ex. Printer"
               isRequired
               maxLength={15}
             />
             <InputField
-              title="Value"
+              label="Value"
               id="value"
-              inputName="value"
               type="number"
               placeholder="ex. 100$"
+              valueAsNumber={true}
             />
             <InputField
-              title="Store"
+              label="Store"
               id="store"
-              inputName="store"
               type="text"
               placeholder="ex. Amazon"
               maxLength={20}
             />
             <InputField
-              title="Date of purchase"
+              label="Date of purchase"
               id="date"
-              inputName="date"
               type="date"
               isRequired
               errorMsg="Please select a day of purchase"
