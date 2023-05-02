@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Layout from "../../components/Layout";
 import { Product } from "@prisma/client";
 import prisma from "../../lib/prisma";
@@ -8,6 +8,8 @@ import HttpRequest from "../../http/requests.http";
 import Form from "../../components/Form";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
+import { FormContext } from "../../context/form.context";
+import Select from "../../components/Select";
 
 export const getServerSideProps: any = async ({ params }: any) => {
   const post = await prisma.product.findUnique({
@@ -21,7 +23,7 @@ export const getServerSideProps: any = async ({ params }: any) => {
 };
 
 const DetailProductView = (props: Product) => {
-  const { product, date } = props;
+  const { product, date, id } = props;
   const router = useRouter();
 
   const { data: session } = useSession();
@@ -35,57 +37,66 @@ const DetailProductView = (props: Product) => {
 
   // Submit
   const onSubmit: any = async (data: Product) => {
-    // console.log(data);
+    console.log(data);
+    if (id) {
+      await httpRequest.replaceProduct({ id, ...data });
+      await router.push("/");
+    }
   };
 
   return (
     <Layout>
       <div className="flex flex-col items-center">
         <div className="w-full max-w-lg">
-          <Form onSubmit={onSubmit} isDisabled preFill={props}>
-            <div className="flex justify-around">
-              <InputField
-                title="Product name"
-                id="product"
-                inputName="product"
-                type="text"
-                placeholder="ex. Printer"
-                isRequired
-                maxLength={15}
-              />
-              <InputField
-                title="Store"
-                id="store"
-                inputName="store"
-                type="text"
-                placeholder="ex. Amazon"
-                maxLength={20}
-              />
-            </div>
+          <Form onSubmit={onSubmit} preFill={props} isDisabled>
             <InputField
-              title="Value"
-              id="value"
-              inputName="value"
-              type="number"
-              placeholder="ex. 100$"
+              label="Product name"
+              id="product"
+              type="text"
+              placeholder="ex. Printer"
+              isRequired
+              maxLength={15}
+            />
+            <InputField
+              label="Store"
+              id="store"
+              type="text"
+              placeholder="ex. Amazon"
+              maxLength={20}
             />
 
             <InputField
-              title="Date of purchase"
+              label="Value"
+              id="value"
+              type="number"
+              placeholder="ex. 100$"
+              valueAsNumber={true}
+            />
+
+            <InputField
+              label="Date of purchase"
               id="date"
-              inputName="date"
               type="date"
               isRequired
               errorMsg="Please select a day of purchase"
             />
-
-            <Button />
-
-            {isUserLogedIn && (
-              <button onClick={() => deleteProduct(String(props.id))}>
+            <Select
+              title="Warranty duration"
+              id="period"
+              inputName="period"
+              isRequired
+            />
+            <div className="flex justify-evenly bg-white p-1">
+              <Button
+                onClick={() => deleteProduct(String(props.id))}
+                type="button"
+              >
                 Delete
-              </button>
-            )}
+              </Button>
+              <Button type="button" toggleContext>
+                Edit
+              </Button>
+            </div>
           </Form>
         </div>
       </div>

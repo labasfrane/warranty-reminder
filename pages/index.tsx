@@ -1,39 +1,15 @@
 import { GetStaticProps } from "next";
-import { User, Product } from "@prisma/client";
-import prisma from "../lib/prisma";
+import { Product } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Layout from "../components/Layout";
 import ProductCard from "../components/ProductCard";
+import HttpRequest from "../http/requests.http";
 
 type Props = {
-  users: User[];
   products: Product[];
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
-    },
-  });
-
-  const products = await prisma.product.findMany({
-    select: {
-      id: true,
-      product: true,
-      value: true,
-      store: true,
-      date: true,
-      period: true,
-    },
-  });
-
-  return { props: { users, products } };
-};
-
-const Home = ({ users, products }: Props) => {
+const Home = ({ products }: Props) => {
   const { data: session } = useSession();
   const isUserLogedIn = Boolean(session);
 
@@ -47,19 +23,15 @@ const Home = ({ users, products }: Props) => {
           ? content
           : "Welcome to Warranty Reminder, please Login to continue! "}
       </div>
-      {/* {products.map(({ id, title }) => (
-        <section key={id}>
-          <p>{title}</p>
-        </section>
-      ))}
-      {users.map(({ id, name, email }: User) => (
-        <section key={id}>
-          <p>{name}</p>
-          <p>{email}</p>
-        </section>
-      ))} */}
     </Layout>
   );
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const httpRequest = new HttpRequest();
+  const products = await httpRequest.getProducts();
+
+  return { props: { products } };
+};
