@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormCtxProvider } from "../context/form.context";
+import Button from "./Button";
 
 type Props = {
   children: any;
@@ -13,8 +14,8 @@ const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
   const methods = useForm({
     mode: "onChange",
   });
-  const watchedFields = methods.watch(["product", "date", "period"]);
 
+  const watchedFields = methods.watch(["product", "date", "period"]);
   const hasInputValue = (arr: String[]): Boolean => {
     return arr.every((value) => value !== "" && value !== undefined);
   };
@@ -28,20 +29,22 @@ const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 "
       >
         {children}
-        <div>
-          <input
-            className="disabled:opacity-30 cursor-pointer mr-2"
-            disabled={!hasInputValue(watchedFields)}
+        <div className="flex justify-evenly p-1">
+          <Button
             type="submit"
-          />
-          <button
+            isActive={!isDisabled && !hasInputValue(watchedFields)}
+          >
+            Submit
+          </Button>
+
+          <Button
             type="button"
             onClick={() => {
               methods?.reset();
             }}
           >
-            Clear
-          </button>
+            Reset
+          </Button>
         </div>
       </form>
     </FormCtxProvider>
