@@ -7,6 +7,14 @@ class HttpRequest extends HttpClient {
     super(BASE_URL);
   }
 
+  public async getProducts(): Promise<Product> {
+    const response = await fetch(this.url("/api/getProducts"), {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    return response.json();
+  }
+
   public async postProduct({ ...product }: Product): Promise<Product> {
     const body = product;
     const response = await fetch(this.url("/api/product"), {
@@ -24,6 +32,17 @@ class HttpRequest extends HttpClient {
     });
 
     return response;
+  }
+
+  public async replaceProduct({ id, ...product }: Product): Promise<Product> {
+    const body = product;
+    const response = await fetch(this.url(`/api/product/${id}`), {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    return response.json();
   }
 }
 
