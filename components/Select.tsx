@@ -9,10 +9,11 @@ type Props = {
   isRequired?: boolean;
 };
 
-type Options = {
-  label: string;
-  value: string | number;
-};
+// type Option = {
+//   label: string;
+//   value: string | number;
+//   date: Date;
+// };
 
 const Select = ({
   title,
@@ -23,7 +24,7 @@ const Select = ({
 }: Props) => {
   const optionsArr = [
     { label: "Choose one option", value: "" },
-    { label: "One", value: 1 },
+    { label: "One", value: new Date() },
     { label: "Two", value: 2 },
     { label: "Three", value: 3 },
     { label: "Four", value: 4 },
@@ -34,6 +35,20 @@ const Select = ({
     { label: "Nine", value: 9 },
     { label: "Ten", value: 10 },
   ];
+
+  // const optionsArr: Option[] = Array.from(Array(10)).map((_, index) => ({
+  //   label: `${index + 1}`,
+  //   value: index + 1,
+  //   date: new Date(
+  //     new Date().setFullYear(new Date().getFullYear() + index + 1)
+  //   ),
+  // }));
+
+  // optionsArr.unshift({
+  //   label: "Choose one option",
+  //   value: "",
+  //   date: new Date(),
+  // });
 
   const {
     register,
@@ -56,7 +71,7 @@ const Select = ({
         id={id}
       >
         {optionsArr.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.label} value={option.value}>
             {option.label}
           </option>
         ))}

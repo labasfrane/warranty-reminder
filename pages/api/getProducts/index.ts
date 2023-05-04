@@ -15,6 +15,7 @@ export default async function getProductsHandler(
         store: true,
         date: true,
         period: true,
+        endDate: true,
       },
     });
 

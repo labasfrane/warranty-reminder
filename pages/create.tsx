@@ -7,26 +7,18 @@ import Select from "../components/Select";
 import { Product } from "@prisma/client";
 import Layout from "../components/Layout";
 
-type FormValues = {
-  product: string;
-  value: number;
-  store: string;
-  date: string;
-  id?: string;
-  period: number;
-};
-
 type Props = {};
 
 const Create = ({}: Props) => {
-  const router = useRouter();
   const httpRequest = new HttpRequest();
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data: Product) => {
+  const onSubmit: SubmitHandler<Product> = async (data: Product) => {
     try {
       console.log(data);
-      const { product, value, store, date, period } = data;
-      const body = { product, value, store, date, period };
+      const date = new Date(data.date);
+      const { product, value, store, endDate, period } = data;
+      const body = { product, value, store, date, period, endDate };
       await httpRequest.postProduct(body);
       await router.push("/");
     } catch (error) {
@@ -72,12 +64,20 @@ const Create = ({}: Props) => {
               isRequired
               errorMsg="Please select a day of purchase"
             />
-            <Select
+            <InputField
+              label="Duration Period"
+              id="period"
+              type="number"
+              placeholder="Enter Number between 1-10"
+              isRequired
+              valueAsNumber={true}
+            />
+            {/* <Select
               title="Warranty duration"
               id="period"
               inputName="period"
               isRequired
-            />
+            /> */}
           </Form>
         </div>
       </div>

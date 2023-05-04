@@ -14,8 +14,7 @@ function ProductCard({ product }: Props) {
   const router = useRouter();
 
   const startDate = moment(product.date).format("ll");
-  const addDuraton = moment().add(product.period, "years");
-  const endDate = addDuraton.format("ll");
+  const endDate = moment(product.endDate).format("ll");
 
   const handleNavigate = () => {
     router.push("/product/[id]", `/product/${product.id}`);

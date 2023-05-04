@@ -14,11 +14,12 @@ import Select from "../../components/Select";
 export const getServerSideProps: any = async ({ params }: any) => {
   const post = await prisma.product.findUnique({
     where: {
-      id: String(params?.id),
+      id: +params?.id,
     },
   });
   return {
-    props: post,
+    //Check this for better solution
+    props: JSON.parse(JSON.stringify(post)),
   };
 };
 

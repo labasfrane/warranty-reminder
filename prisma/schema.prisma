@@ -52,10 +52,11 @@ model VerificationToken {
 }
 
 model Product {
-  id      String  @id @default(cuid())
-  date    String
+  id      Int       @id @default(autoincrement())
   period  Int
   product String
   store   String?
-  value   Int?
+  endDate DateTime?
+  date    DateTime
+  value   Int       @default(0)
 }

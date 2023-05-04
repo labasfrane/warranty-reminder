@@ -12,7 +12,7 @@ export default async function deleteHandler(
 
   if (req.method === "PUT") {
     const result = await prisma.product.update({
-      where: { id: postId },
+      where: { id: +postId },
       data: { ...productData },
     });
     res.json(result);
@@ -20,7 +20,7 @@ export default async function deleteHandler(
 
   if (req.method === "DELETE") {
     const product = await prisma.product.delete({
-      where: { id: postId },
+      where: { id: +postId },
     });
     res.json(product);
   } else {
