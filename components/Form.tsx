@@ -45,6 +45,11 @@ const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
           >
             Reset
           </Button>
+          {isDisabled && (
+            <Button type="button" toggleContext>
+              Edit mode
+            </Button>
+          )}
         </div>
       </form>
     </FormCtxProvider>

@@ -31,10 +31,17 @@ const Create = ({}: Props) => {
       <div className="flex flex-col justify-center items-center space-y-10 py-5 ">
         <h1 className="text-xl uppercase">Create</h1>
         <p className="">
-          Please fill out the required(*) fields and click add to create new
+          Please fill out the required(*) fields and click 'Submit' button to
+          create new warranty reminder.
         </p>
         <div className="w-full max-w-lg">
           <Form onSubmit={onSubmit}>
+            <div className="inline-flex items-center justify-center w-full">
+              <hr className="w-full h-px my-4" />
+              <span className="absolute px-3 -translate-x-1/2 bg-white left-1/2">
+                Required fields
+              </span>
+            </div>
             <InputField
               label="Product name"
               id="product"
@@ -43,6 +50,22 @@ const Create = ({}: Props) => {
               isRequired
               maxLength={15}
             />
+            <InputField
+              label="Date of purchase"
+              id="date"
+              type="date"
+              isRequired
+              errorMsg="Please select a day of purchase"
+            />
+
+            <Select label="Warranty duration" id="period" />
+
+            <div className="inline-flex items-center justify-center w-full">
+              <hr className="w-full h-px my-4" />
+              <span className="absolute px-3 -translate-x-1/2 bg-white left-1/2">
+                Optional fields
+              </span>
+            </div>
             <InputField
               label="Value"
               id="value"
@@ -57,27 +80,6 @@ const Create = ({}: Props) => {
               placeholder="ex. Amazon"
               maxLength={20}
             />
-            <InputField
-              label="Date of purchase"
-              id="date"
-              type="date"
-              isRequired
-              errorMsg="Please select a day of purchase"
-            />
-            <InputField
-              label="Duration Period"
-              id="period"
-              type="number"
-              placeholder="Enter Number between 1-10"
-              isRequired
-              valueAsNumber={true}
-            />
-            {/* <Select
-              title="Warranty duration"
-              id="period"
-              inputName="period"
-              isRequired
-            /> */}
           </Form>
         </div>
       </div>

@@ -1,30 +1,23 @@
 import { ErrorMessage } from "@hookform/error-message";
+import { useContext } from "react";
 import { useFormContext } from "react-hook-form";
+import { FormContext } from "../context/form.context";
 
 type Props = {
+  label: string;
   id: string;
-  title: string;
-  inputName: string;
   errorMsg?: string;
   isRequired?: boolean;
 };
 
-// type Option = {
-//   label: string;
-//   value: string | number;
-//   date: Date;
-// };
-
 const Select = ({
-  title,
-  inputName,
+  label,
   id,
-  isRequired = false,
   errorMsg = "Please select one of the options",
 }: Props) => {
   const optionsArr = [
     { label: "Choose one option", value: "" },
-    { label: "One", value: new Date() },
+    { label: "One", value: 1 },
     { label: "Two", value: 2 },
     { label: "Three", value: 3 },
     { label: "Four", value: 4 },
@@ -36,36 +29,20 @@ const Select = ({
     { label: "Ten", value: 10 },
   ];
 
-  // const optionsArr: Option[] = Array.from(Array(10)).map((_, index) => ({
-  //   label: `${index + 1}`,
-  //   value: index + 1,
-  //   date: new Date(
-  //     new Date().setFullYear(new Date().getFullYear() + index + 1)
-  //   ),
-  // }));
-
-  // optionsArr.unshift({
-  //   label: "Choose one option",
-  //   value: "",
-  //   date: new Date(),
-  // });
-
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { disabled, ...methods } = useContext(FormContext);
 
   return (
     <div className="mb-5">
       <label htmlFor={id} className="block mb-2">
-        {isRequired ? `${title} *` : title}
+        {`${label} *`}
       </label>
 
       <select
+        disabled={disabled}
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400"
         autoFocus
-        {...register(`${inputName}`, {
-          required: { value: isRequired, message: `${errorMsg}` },
+        {...methods?.register(`${id}`, {
+          required: { value: true, message: `${errorMsg}` },
           valueAsNumber: true,
         })}
         id={id}
@@ -79,8 +56,8 @@ const Select = ({
 
       <div className="min-h-7 h-7 flex items-center">
         <ErrorMessage
-          errors={errors}
-          name={inputName}
+          errors={methods?.errors}
+          name={id}
           render={({ message }) => (
             <p className="text-red-500 text-start p-1">{message}</p>
           )}

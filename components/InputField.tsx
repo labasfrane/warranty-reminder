@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { useContext } from "react";
 import { FormContext } from "../context/form.context";
+import moment from "moment";
 
 type Props = {
   id: string;
@@ -14,6 +15,7 @@ type Props = {
   maxValue?: number;
   minValue?: number;
   valueAsNumber?: boolean;
+  valueAsDate?: boolean;
 };
 
 const InputField = ({
@@ -27,10 +29,31 @@ const InputField = ({
   maxValue = 100000000,
   minValue = 0,
   valueAsNumber = false,
+  valueAsDate = false,
 }: Props) => {
   const { disabled, ...methods } = useContext(FormContext);
 
   const createInput = () => {
+    const value = methods.getValues(id);
+
+    if (valueAsDate && value) {
+      return (
+        <input
+          disabled={disabled}
+          type="date"
+          value={moment(value).format("YYYY-MM-DD")}
+          onChange={(event) => methods.setValue(id, event.target.value)}
+          onBlur={(event) =>
+            methods.setValue(
+              id,
+              moment(event.target.value).toDate().toISOString()
+            )
+          }
+          className="w-full border-none outline-none"
+        />
+      );
+    }
+
     const defaultInput = (
       <input
         {...methods?.register(`${id}`, {
@@ -45,6 +68,7 @@ const InputField = ({
             message: `${label} field maximum length is ${maxLength} characters`,
           },
           valueAsNumber: valueAsNumber,
+          valueAsDate: valueAsDate,
         })}
         placeholder={placeholder}
         type={type}
@@ -56,8 +80,6 @@ const InputField = ({
     );
 
     if (disabled) {
-      const value = methods?.getValues(id);
-
       return value || "N/A";
     }
 
