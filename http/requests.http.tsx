@@ -36,7 +36,7 @@ class HttpRequest extends HttpClient {
 
   public async replaceProduct({ id, ...product }: Product): Promise<Product> {
     const body = product;
-    const response = await fetch(this.url(`/api/product/${id}`), {
+    const response = await fetch(this.url(`/api/product/update/${id}`), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

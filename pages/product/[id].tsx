@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import Layout from "../../components/Layout";
-import { Product } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -11,22 +10,39 @@ import Button from "../../components/Button";
 import { FormContext } from "../../context/form.context";
 import Select from "../../components/Select";
 
+import { Product } from "@prisma/client";
+
 export const getServerSideProps: any = async ({ params }: any) => {
   const post = await prisma.product.findUnique({
     where: {
       id: +params?.id,
     },
+    select: {
+      id: true,
+      product: true,
+      value: true,
+      store: true,
+      date: true,
+      period: true,
+      endDate: true,
+    },
   });
   return {
-    //Check this for better solution
-    props: JSON.parse(JSON.stringify(post)),
+    props: {
+      id: post?.id,
+      product: post?.product,
+      date: JSON.parse(JSON.stringify(post?.date)),
+      period: post?.period,
+      value: post?.value,
+      store: post?.store,
+    },
   };
 };
 
 const DetailProductView = (props: Product) => {
   const { product, date, id } = props;
   const router = useRouter();
-
+  console.log(props);
   const { data: session } = useSession();
   const isUserLogedIn = Boolean(session);
   const httpRequest = new HttpRequest();
@@ -40,7 +56,7 @@ const DetailProductView = (props: Product) => {
   const onSubmit: any = async (data: Product) => {
     console.log(data);
     if (id) {
-      await httpRequest.replaceProduct({ id, ...data });
+      await httpRequest.replaceProduct({ ...data });
       await router.push("/");
     }
   };
@@ -80,22 +96,15 @@ const DetailProductView = (props: Product) => {
               type="date"
               isRequired
               errorMsg="Please select a day of purchase"
+              valueAsDate
             />
-            <Select
-              title="Warranty duration"
-              id="period"
-              inputName="period"
-              isRequired
-            />
+            <Select label="Warranty duration" id="period" />
             <div className="flex justify-evenly bg-white p-1">
               <Button
                 onClick={() => deleteProduct(String(props.id))}
                 type="button"
               >
                 Delete
-              </Button>
-              <Button type="button" toggleContext>
-                Edit
               </Button>
             </div>
           </Form>

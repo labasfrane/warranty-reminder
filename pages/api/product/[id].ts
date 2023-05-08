@@ -8,15 +8,6 @@ export default async function deleteHandler(
   res: NextApiResponse<Product>
 ) {
   const postId = String(req.query.id);
-  const productData = req.body;
-
-  if (req.method === "PUT") {
-    const result = await prisma.product.update({
-      where: { id: +postId },
-      data: { ...productData },
-    });
-    res.json(result);
-  }
 
   if (req.method === "DELETE") {
     const product = await prisma.product.delete({
