@@ -58,5 +58,5 @@ model Product {
   store   String?
   endDate DateTime?
   date    DateTime
-  value   Int       @default(0)
+  value   Int?
 }

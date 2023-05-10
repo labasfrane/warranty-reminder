@@ -15,11 +15,11 @@ const Create = ({}: Props) => {
 
   const onSubmit: SubmitHandler<Product> = async (data: Product) => {
     try {
-      console.log(data);
+      console.log("Created Product:", data);
       const date = new Date(data.date);
       const { product, value, store, endDate, period } = data;
       const body = { product, value, store, date, period, endDate };
-      await httpRequest.postProduct(body);
+      await httpRequest.createProduct(body);
       await router.push("/");
     } catch (error) {
       console.error(error);

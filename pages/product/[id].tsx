@@ -7,34 +7,22 @@ import HttpRequest from "../../http/requests.http";
 import Form from "../../components/Form";
 import InputField from "../../components/InputField";
 import Button from "../../components/Button";
-import { FormContext } from "../../context/form.context";
 import Select from "../../components/Select";
 
 import { Product } from "@prisma/client";
 
 export const getServerSideProps: any = async ({ params }: any) => {
-  const post = await prisma.product.findUnique({
-    where: {
-      id: +params?.id,
-    },
-    select: {
-      id: true,
-      product: true,
-      value: true,
-      store: true,
-      date: true,
-      period: true,
-      endDate: true,
-    },
-  });
+  const httpRequest = new HttpRequest();
+  const product = await httpRequest.getProduct(params?.id);
+
   return {
     props: {
-      id: post?.id,
-      product: post?.product,
-      date: JSON.parse(JSON.stringify(post?.date)),
-      period: post?.period,
-      value: post?.value,
-      store: post?.store,
+      id: product?.id,
+      product: product?.product,
+      date: JSON.parse(JSON.stringify(product?.date)),
+      period: product?.period,
+      value: product?.value,
+      store: product?.store,
     },
   };
 };
@@ -42,24 +30,24 @@ export const getServerSideProps: any = async ({ params }: any) => {
 const DetailProductView = (props: Product) => {
   const { product, date, id } = props;
   const router = useRouter();
-  console.log(props);
   const { data: session } = useSession();
   const isUserLogedIn = Boolean(session);
   const httpRequest = new HttpRequest();
 
+  // Submit edited product
+  const onSubmit: any = async (data: Product) => {
+    console.log("Edited Product:", data);
+    if (id) {
+      await httpRequest.editProduct({ ...data });
+      await router.push("/");
+    }
+  };
+
+  // Delete product
   async function deleteProduct(id: string) {
     await httpRequest.deleteProduct(id);
     router.push("/");
   }
-
-  // Submit
-  const onSubmit: any = async (data: Product) => {
-    console.log(data);
-    if (id) {
-      await httpRequest.replaceProduct({ ...data });
-      await router.push("/");
-    }
-  };
 
   return (
     <Layout>
