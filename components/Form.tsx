@@ -29,14 +29,13 @@ const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 "
       >
         {children}
-        <div className="flex justify-evenly p-1">
+        <div className="flex gap-2 p-2 justify-evenly">
           <Button
             type="submit"
             isActive={!isDisabled && !hasInputValue(watchedFields)}
           >
             Submit
           </Button>
-
           <Button
             type="button"
             onClick={() => {
@@ -45,11 +44,6 @@ const Form = ({ children, onSubmit, isDisabled, preFill }: Props) => {
           >
             Reset
           </Button>
-          {isDisabled && (
-            <Button type="button" toggleContext>
-              Edit mode
-            </Button>
-          )}
         </div>
       </form>
     </FormCtxProvider>

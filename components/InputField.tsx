@@ -49,7 +49,7 @@ const InputField = ({
               moment(event.target.value).toDate().toISOString()
             )
           }
-          className="w-full border-none outline-none"
+          className="w-full border-none outline-none disabled:bg-inherit"
         />
       );
     }
@@ -94,8 +94,8 @@ const InputField = ({
       <div
         className={
           disabled
-            ? " h-10 py-2 px-3"
-            : "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400 h-10"
+            ? "h-10 py-2 px-3"
+            : "appearance-none shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400 h-10"
         }
       >
         {createInput()}

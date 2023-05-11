@@ -18,10 +18,14 @@ const Home = ({ products }: Props) => {
   ));
   return (
     <Layout>
-      <div className="flex gap-5 items-center justify-center p-10">
-        {isUserLogedIn
-          ? content
-          : "Welcome to Warranty Reminder, please Login to continue! "}
+      <div className="flex gap-5 items-center justify-center">
+        {isUserLogedIn ? (
+          <div className="grid grid-cols-1 xs:grid-cols-1 md:grid-cols-2 gap-5">
+            {content}
+          </div>
+        ) : (
+          "Welcome to Warranty Reminder, please Login to continue! "
+        )}
       </div>
     </Layout>
   );

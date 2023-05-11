@@ -28,6 +28,7 @@ const Button = ({
       type={type}
       onClick={toggleContext ? handleButtonClick : onClick}
       disabled={isActive}
+      hidden={disabled && !toggleContext}
     >
       {children}
     </button>

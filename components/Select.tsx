@@ -39,7 +39,7 @@ const Select = ({
 
       <select
         disabled={disabled}
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-1 placeholder:text-gray-400"
+        className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:ring-1 disabled:border-none disabled:shadow-none"
         autoFocus
         {...methods?.register(`${id}`, {
           required: { value: true, message: `${errorMsg}` },

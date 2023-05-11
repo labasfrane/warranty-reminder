@@ -94,6 +94,9 @@ const DetailProductView = (props: Product) => {
               >
                 Delete
               </Button>
+              <Button type="button" toggleContext>
+                Edit
+              </Button>
             </div>
           </Form>
         </div>
